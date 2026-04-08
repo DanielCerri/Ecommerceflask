@@ -1,11 +1,13 @@
-import sqlite3
+import sqlite3,os
 from flask import g
 
 class Database():
     
     def __init__(self):
         #Definindo o caminho do banco 
-        self.caminhoBanco=r"F:\daniel\cosmeticos\models\banco.db"
+        base_dir = os.path.abspath(os.path.dirname(__file__))
+        caminho=os.path.join(base_dir,"banco.db")
+        self.caminhoBanco=caminho
     
     def get_conn(self):
         #Abre a conexao apenas se ela não existir 
