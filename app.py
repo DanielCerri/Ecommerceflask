@@ -20,8 +20,8 @@ UPLOAD_FOLDER=r"F:\daniel\cosmeticos\uploads"
 #Rede do senai bloqueia a porta 2525
 # def EnviarEmailTeste(msg):
 #     # Dados fornecidos pelo painel do Mailtrap
-#     usuario = "0e01e5eadacc87"
-#     senha = "4d41691aa87112"
+#     usuario = ""
+#     senha = ""
     
 #     sender = "Private Person <from@example.com>"
 #     receiver = f"{session.get('email')}"
