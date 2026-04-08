@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | Reboco Luxury</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --brand-primary: #1a1a1a;
+            --brand-accent: #db2777; /* Rosa Profundo */
+            --brand-bg: #fafafa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: screen;
+            margin: 0;
+            height: 100vh;
+        }
+
+        /* Container Principal */
+        .auth-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            padding: 3rem;
+            border-radius: 2px; /* Estilo luxo costuma usar bordas mais retas ou sutis */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            border: 1px solid #f0f0f0;
+        }
+
+        /* Cabeçalho Customizado */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-header p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #999;
+        }
+
+        /* Estilização do Form sem mexer no Jinja */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input {
+            all: unset; /* Limpa estilos padrão */
+            box-sizing: border-box;
+            width: 100%;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0.75rem 0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            transition: border-color 0.4s ease;
+        }
+
+        input:focus {
+            border-bottom-color: var(--brand-accent);
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        button {
+            background: var(--brand-primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background: var(--brand-accent);
+            letter-spacing: 0.25em;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .footer-link a {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <header class="brand-header">
+            <h1>Rebo©o</h1>
+            <p>Atelier de Cosméticos</p>
+        </header>
+
+        <form action="/cadastrar" method="post">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" placeholder="seu@email.com">
+
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" placeholder="••••••••">
+
+            <button type="submit">Criar Conta</button>
+        </form>
+
+        <div class="footer-link">
+            Já possui acesso? <a href="/">Entrar</a>
+        </div>
+    </div>
+
+</body>
+</html>

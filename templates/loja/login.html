@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Loja Reboco</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset básico e tipografia */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Fundo em tom nude/rosé claro elegante */
+            background-color: #fdf5f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Container principal do Login */
+        .login-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Cabeçalho do formulário */
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #d88596; /* Tom rosé mais escuro */
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 28px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Grupos de input (Label + Input) */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #d88596;
+        }
+
+        /* Botão Principal */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: #d88596;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #c26d7e;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Link de Cadastro */
+        .signup-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .signup-link span {
+            color: #d88596;
+            font-weight: 600;
+        }
+
+        .signup-link:hover span {
+            color: #c26d7e;
+            text-decoration: underline;
+        }
+
+        /* Estilo das mensagens Flash do Flask */
+        .flash-messages {
+            margin-top: 20px;
+        }
+
+        .flash-message {
+            background-color: #e8f5e9; /* Fundo verde claro */
+            color: #2e7d32; /* Texto verde escuro */
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+            border: 1px solid #c8e6c9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>REBOCO</h1>
+            <p>Sua beleza em primeiro lugar</p>
+        </div>
+
+        <form action="/entrar" method="post">
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" name="email" id="email" placeholder="Digite seu e-mail" required>
+            </div>
+
+            <div class="input-group">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Entrar</button>
+        </form>
+
+        <a href="{{ url_for('cadastro') }}" class="signup-link">
+            Não tem conta? <span>Cadastre-se</span>
+        </a>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+    </div>
+
+</body>
+
+</html>

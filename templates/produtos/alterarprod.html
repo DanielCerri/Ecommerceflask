@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    {%  for p in prods %}
+<form action=" {{ url_for('alterarprod') }} " method="post">
+
+    <label for="">ID: {{ p['id']}}</label>
+    <input type="text" hidden value="{{ p['id']}}" name="id" >
+
+    <label for="">Produto: </label>
+    <input type="text" value="{{ p['nome']}}" name="nome">
+
+    <label for="">Preço: {{ p['preco']}}</label>
+    <input type="text" value="{{ p['preco']}}" name="preco">
+
+    <label for="">Imagem:</label>
+    <input type="file">
+
+    <button type="submit">Alterar</button>
+    
+</form>
+    {% endfor %}
+
+</body>
+</html>

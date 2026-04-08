@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosméticos Reboco | Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .bg-mesh {
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(328,100%,98%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(225,39%,96%,1) 0, transparent 50%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-mesh flex items-center justify-center min-h-screen p-6">
+
+    <div class="max-w-4xl w-full">
+        <header class="text-center mb-12">
+            <h1 class="text-sm font-medium uppercase tracking-[0.4em] text-pink-400 mb-2">Bem-vindo à</h1>
+            <h2 class="text-5xl font-bold text-gray-900 leading-tight">
+                Rebo<span class="text-pink-600 italic">©</span>o
+            </h2>
+            <p class="text-gray-500 mt-4 italic">Escolha o ambiente que deseja acessar</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            <a href="{{ url_for('cadprod') }}" class="group">
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-b-4 hover:border-pink-500 flex flex-col items-center text-center h-full">
+                    <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-pink-100 transition-colors">
+                        <i data-lucide="package-plus" class="w-10 h-10 text-gray-600 group-hover:text-pink-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Gestão de Estoque</h3>
+                    <p class="text-gray-500 text-sm mb-6">Área restrita para cadastro e organização de novos produtos no catálogo.</p>
+                    <span class="mt-auto text-pink-600 font-medium flex items-center gap-2">
+                        Acessar painel <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </a>
+
+            <a href="{{ url_for('loja') }}" class="group">
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-b-4 hover:border-purple-500 flex flex-col items-center text-center h-full">
+                    <div class="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-100 transition-colors">
+                        <i data-lucide="shopping-bag" class="w-10 h-10 text-gray-600 group-hover:text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Vitrine da Loja</h3>
+                    <p class="text-gray-500 text-sm mb-6">Navegue pelos cosméticos disponíveis e visualize a experiência do cliente.</p>
+                    <span class="mt-auto text-purple-600 font-medium flex items-center gap-2">
+                        Ir para a loja <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </a>
+
+        </div>
+
+        <footer class="mt-12 text-center">
+            <a href="{{ url_for('logout') }}" class="text-gray-400 hover:text-red-500 transition-colors flex items-center justify-center gap-2 text-sm font-medium">
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                Sair do sistema
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        // Inicializa os ícones Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento | Reboco</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        reboco: { light: '#ffe4e6', DEFAULT: '#fb7185', dark: '#e11d48' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex flex-col">
+                <a href="/loja" class="text-3xl font-extrabold text-reboco-dark tracking-tighter">REBOCO</a>
+            </div>
+            <a href="/loja" class="text-gray-600 hover:text-reboco-dark font-medium">
+                <i class="fas fa-arrow-left mr-1"></i> Voltar à Loja
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-10 max-w-4xl">
+        <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b-4 border-reboco pb-2 inline-block">Meu Carrinho</h2>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+            
+            {% if carrinhop %}
+            {% set valortotal= namespace(total=0) %}
+                <div class="divide-y divide-gray-200">
+                    {% for item in carrinhop %}
+                    <div class="py-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-reboco-light p-3 rounded-lg text-reboco-dark">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-gray-800">{{ item["nome"] }}</h4>
+                            </div>
+                        </div>
+                        <span class="text-lg font-bold text-reboco-dark">R$ {{ "%.2f"|format(item["preco"]) }}</span>
+                        {% set valortotal.total = valortotal.total + item["preco"] %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-8 pt-6 border-t-2 border-dashed border-gray-200">
+                    <div class="flex justify-between items-center mb-8">
+                        <span class="text-xl text-gray-600 font-medium">Total da Compra:</span>
+                        <span class="text-3xl font-black text-reboco-dark">R$: {{ valortotal.total }}</span>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">Escolha como pagar</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="metodo" value="pix" class="hidden peer" onchange="alternarPagamento('pix')">
+                                <div class="flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-reboco-light transition-all peer-checked:border-reboco peer-checked:bg-reboco-light/20">
+                                    <i class="fa-brands fa-pix text-2xl text-teal-500 mr-3"></i>
+                                    <span class="font-bold">Pix</span>
+                                    <i class="fas fa-check-circle ml-auto text-reboco opacity-0 peer-checked:opacity-100"></i>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer">
+                                <input type="radio" name="metodo" value="cartao" class="hidden peer" onchange="alternarPagamento('cartao')">
+                                <div class="flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-reboco-light transition-all peer-checked:border-reboco peer-checked:bg-reboco-light/20">
+                                    <i class="fas fa-credit-card text-2xl text-blue-500 mr-3"></i>
+                                    <span class="font-bold">Cartão de Crédito</span>
+                                    <i class="fas fa-check-circle ml-auto text-reboco opacity-0 peer-checked:opacity-100"></i>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="area-pix" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-8 text-center animate-fadeIn">
+                            <p class="text-sm font-medium text-gray-600 mb-4 font-bold">Escaneie o QR Code para pagar:</p>
+                            <div class="inline-block bg-white p-4 rounded-lg shadow-sm mb-4">
+                                <img id="qrcode" src="" alt="QR Code Pix" class="w-48 h-48 mx-auto">
+                            </div>
+                            <p class="text-xs text-gray-400">O código expira em 30 minutos.</p>
+                        </div>
+
+                        <div id="area-cartao" class="hidden bg-gray-50 border border-gray-200 rounded-xl p-6 animate-fadeIn">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Número do Cartão</label>
+                                    <input type="text" placeholder="0000 0000 0000 0000" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reboco focus:outline-none">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Nome no Cartão</label>
+                                    <input type="text" placeholder="JOÃO SILVA" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reboco focus:outline-none uppercase">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Validade</label>
+                                    <input type="text" placeholder="MM/AA" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reboco focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">CVV</label>
+                                    <input type="text" placeholder="123" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reboco focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="/finalizar_compra" class="block w-full text-center bg-reboco text-white font-bold py-4 rounded-lg hover:bg-reboco-dark hover:shadow-lg transition-all text-lg">
+                        <i class="fas fa-check-circle mr-2"></i> Finalizar Compra e Pagar
+                    </a>
+                </div>
+
+            {% else %}
+                <div class="text-center py-12">
+                    <i class="fas fa-shopping-cart text-5xl text-gray-300 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-600 mb-2">Sua bolsa está vazia!</h3>
+                    <p class="text-gray-500 mb-6">Você ainda não escolheu seu reboco de hoje.</p>
+                    <a href="/loja" class="inline-block bg-reboco text-white font-bold py-3 px-8 rounded-lg hover:bg-reboco-dark transition-all">
+                        Ir para a Loja
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-6 mt-auto">
+        <div class="container mx-auto text-center">
+            <p class="text-sm">Rebocando a sua Cara &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        function alternarPagamento(metodo) {
+            const areaPix = document.getElementById('area-pix');
+            const areaCartao = document.getElementById('area-cartao');
+            const imgQrCode = document.getElementById('qrcode');
+
+            if (metodo === 'pix') {
+                areaPix.classList.remove('hidden');
+                areaCartao.classList.add('hidden');
+                
+                // Gera um QR Code aleatório usando uma API pública de exemplo baseada em um ID randômico
+                const randomId = Math.random().toString(36).substring(7);
+                imgQrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020126330014BR.GOV.BCB.PIX0111477624248655204000053039865802BR5901N6001C62070503***6304FAD2`;
+                
+            } else if (metodo === 'cartao') {
+                areaCartao.classList.remove('hidden');
+                areaPix.classList.add('hidden');
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+
+</body>
+</html>

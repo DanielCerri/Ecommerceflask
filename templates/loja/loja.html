@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reboco | Rebocando a sua Cara</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        reboco: {
+                            light: '#ffe4e6', // Fundo suave (rose)
+                            DEFAULT: '#fb7185', // Cor principal dos botões
+                            dark: '#e11d48', // Cor de destaque/texto
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex flex-col">
+                <a>OLÁ {{ session["email"] }} </a>
+
+                <a href="/loja" class="text-3xl font-extrabold text-reboco-dark tracking-tighter">REBOCO</a>
+                <span class="text-xs font-medium text-gray-500 italic tracking-wide">Rebocando a sua Cara</span>
+            </div>
+            
+            <a href="/pagamento" class="relative text-gray-600 hover:text-reboco-dark transition duration-300 p-2">
+                <i class="fas fa-shopping-bag text-2xl">Carrinho</i>
+                <span id="cart-count" class="absolute top-0 right-0 bg-reboco-dark text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white transition-transform duration-200">    
+                </span>
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-500 hover:text-reboco-dark hover:bg-reboco-light rounded-full transition-all duration-300 border border-gray-100 hover:border-reboco-light shadow-sm">
+    <i class="fas fa-sign-out-alt"></i>
+    SAIR DA CONTA
+</a>
+
+        </div>
+    </header>
+
+        {% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+    <div class="bg-gray-900 text-white text-center py-3 px-4 flex items-center justify-center gap-3 animate-pulse">
+        <i class="fas fa-info-circle text-reboco"></i>
+        <p class="text-sm font-medium tracking-wide"> {{ message }}</p>
+    </div>
+    {% endfor %}
+{% endwith %}
+
+    <section class="bg-reboco-light py-12 border-b border-rose-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4">A base perfeita para o seu dia!</h2>
+            <p class="text-gray-600 md:text-lg max-w-2xl mx-auto">
+                Conheça nossa linha de produtos de alta cobertura e longa duração. 
+                Prepare-se para arrasar com um acabamento profissional.
+            </p>
+        </div>
+    </section>
+
+    <main class="flex-grow container mx-auto px-4 py-10">
+        <div class="flex justify-between items-end mb-8">
+            <h3 class="text-2xl font-bold border-b-4 border-reboco pb-2 inline-block">Nossos Produtos</h3>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            {% for produto in produtos %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col group">
+                
+                <div class="relative overflow-hidden">
+                    <img src=" {{ url_for('testeimagem',id=produto['id']) }}" 
+                         alt="{{ produto.nome }}" 
+                         class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <h4 class="text-lg font-bold text-gray-800 mb-1 leading-tight">{{ produto['nome'] }}</h4>
+                    <p class="text-sm text-gray-500 mb-4">Alta cobertura</p>
+                    
+                    <div class="mt-auto flex flex-col gap-3">
+                        <span class="text-2xl font-black text-reboco-dark">
+                            R$ {{ "%.2f"|format(produto['preco']) }}
+                        </span>
+                        
+                        
+                        <a href=" {{ url_for('carrinho',iditem=produto['id']) }}  ">
+
+                        <button  
+                            class="w-full bg-reboco text-white font-bold py-3 px-4 rounded-lg hover:bg-reboco-dark hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                        </button>
+                        <br>
+                
+
+                        </a>
+                       
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-full text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+                <i class="fas fa-box-open text-4xl text-gray-300 mb-4"></i>
+                <h4 class="text-xl font-bold text-gray-600">Nenhum produto cadastrado</h4>
+                <p class="text-gray-500">O nosso reboco esgotou! Volte mais tarde. 😭</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 py-8 mt-auto">
+        <div class="container mx-auto px-4 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-left">
+                <h2 class="text-xl font-bold text-white tracking-tighter">REBOCO</h2>
+                <p class="text-sm mt-1">Rebocando a sua Cara &copy; 2026</p>
+            </div>
+            <div class="flex gap-4 text-xl">
+                <a href="#" class="hover:text-reboco transition"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-reboco transition"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- <script>
+        // Carrega o carrinho existente ou cria um novo array vazio
+        let carrinho = JSON.parse(localStorage.getItem('carrinhoReboco')) || [];
+
+        // Atualiza a bolinha vermelha no ícone do carrinho
+        function atualizarContador() {
+            const countElement = document.getElementById('cart-count');
+            countElement.innerText = carrinho.length;
+            
+            // Efeito visual de "pulso" ao adicionar item
+            countElement.classList.add('scale-150');
+            setTimeout(() => {
+                countElement.classList.remove('scale-150');
+            }, 200);
+        }
+
+        // Função chamada pelo clique no botão "Comprar"
+        function adicionarAoCarrinho(id, nome, preco) {
+            // Adiciona o produto ao array
+            carrinho.push({ id, nome, preco });
+            
+            // Salva no LocalStorage para persistir ao mudar para a página de pagamento
+            localStorage.setItem('carrinhoReboco', JSON.stringify(carrinho));
+            
+            // Atualiza a interface
+            atualizarContador();
+            
+            // Feedback simples para o usuário (Pode ser substituído por um Toast no futuro)
+            alert(`O produto "${nome}" foi para a sua bolsa! 💄`);
+        }
+
+        // Garante que a contagem esteja certa assim que a página carrega
+        document.addEventListener('DOMContentLoaded', atualizarContador);
+    </script> -->
+</body>
+</html>
