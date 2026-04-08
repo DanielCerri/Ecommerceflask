@@ -1,6 +1,7 @@
 from flask import Flask,g,render_template,request,redirect,url_for,flash,session,send_from_directory
 from models.database import Database
 from models.classproduto import Produto
+import os
 #import smtplib
 
 app = Flask(__name__)
@@ -10,10 +11,16 @@ app = Flask(__name__)
 #É O NOSSO PROPRIO SERVIDOR QUE ESTA SE COMUNICANDO E NÃO ALGUM HACKER TENTANDO
 #SIMULAR A SESSÃO! O FLASH E O SESSION DO FLASK SO FUNCIONAM COM O SECRET KEY
 app.secret_key="DS1BACKEND"
-UPLOAD_FOLDER=r"F:\daniel\cosmeticos\uploads"
+# UPLOAD_FOLDER=r"F:\daniel\cosmeticos\uploads"
 
 
+base_dir = os.path.abspath(os.path.dirname(__file__))
 
+# Define o UPLOAD_FOLDER combinando o base_dir com a pasta 'uploads'
+UPLOAD_FOLDER = os.path.join(base_dir, 'uploads')
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['DEBUG'] = True
 
 
 
@@ -165,13 +172,12 @@ def postprod():
     
     if arquivo.filename!="":
         nomearquivo=f"{arquivo.filename}" 
-        obj.imagem= UPLOAD_FOLDER+f"\{nomearquivo}"
+        obj.imagem=os.path.join(UPLOAD_FOLDER,nomearquivo)
         arquivo.save(obj.imagem)
     
-    
-    banco.execute_non_query(r"""
-    INSERT INTO Produtos(nome,preco,pastaimagem,nomeimagem) values(?,?,?,?)"""
-    ,obj.produto,obj.preco,UPLOAD_FOLDER,nomearquivo)
+        banco.execute_non_query(r"""
+        INSERT INTO Produtos(nome,preco,pastaimagem,nomeimagem) values(?,?,?,?)"""
+        ,obj.produto,obj.preco,UPLOAD_FOLDER,nomearquivo)
     
     return redirect(url_for('produtoscadastrados'))
 
